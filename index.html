@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AS DE COEUR</title>
+    <title>AS DE COEUR - VERSION ULTIME</title>
     <style>
         :root {
             --gold: #c5a059;
             --red: #d32f2f;
             --dark-red: #8b0000;
             --cream: #fff9e6;
+            --shadow: rgba(0,0,0,0.3);
         }
 
         body {
@@ -84,6 +85,7 @@
             align-items: center;
             justify-content: center;
             font-size: 0.9em;
+            box-shadow: 1px 1px 3px var(--shadow);
         }
 
         .card .cover {
@@ -95,6 +97,7 @@
             color: white; font-weight: bold; border-radius: 3px;
         }
 
+        /* Style spécial As gagnant */
         .card.is-ace-win {
             border: 2px solid var(--gold) !important;
             background-color: #fffde7;
@@ -127,14 +130,16 @@
         .scratched-heart .heart-reveal { opacity: 1; }
 
         .result-panel { margin-top: 15px; padding: 10px; background: white; border: 2px solid var(--gold); border-radius: 10px; font-weight: bold; }
-        #total-min { font-size: 2.2em; color: var(--red); display: inline-block; }
+        #total-min { font-size: 2.2em; color: var(--red); display: inline-block; transition: transform 0.3s ease; }
         .bonus-msg { margin-top: 5px; color: var(--dark-red); font-size: 0.85em; min-height: 2.2em; line-height: 1.3;}
         
         .btn-new-game { 
             margin-top: 20px; padding: 12px 30px; 
             background: var(--gold); border: 2px solid white; color: white; 
             border-radius: 30px; cursor: pointer; text-transform: uppercase; font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
+        .btn-new-game:hover { background: #d4af37; }
 
         .disabled { cursor: not-allowed; opacity: 0.6; pointer-events: none; }
         .locked { pointer-events: none !important; }
@@ -173,11 +178,19 @@
     
     let winningCards = [];
     let playerCardsData = [];
-    let activeAceSuits = [];
+    let activeAceSuits = []; // Stocke les couleurs d'As révélées
     let totalMinutes = 0;
     let revealedWinners = 0;
     let revealedPlayerCards = 0;
     let isGameOver = false;
+
+    // Fonction de la V1 pour les probas de temps
+    function getRandomTime() {
+        const rand = Math.random();
+        if (rand < 0.40) return 2;
+        if (rand < 0.80) return 5;
+        return 10;
+    }
 
     function getRandomCard(excludeSpecific = []) {
         let s = suits[Math.floor(Math.random() * suits.length)];
@@ -191,7 +204,7 @@
         const winningZone = document.getElementById('winning-zone');
         const playerZone = document.getElementById('player-zone');
 
-        // 1. Génération des 5 cartes gagnantes (Max 1 As)
+        // 1. Génération 5 cartes gagnantes (Max 1 As comme dans V2)
         let hasAnyAce = false;
         while(winningCards.length < 5) {
             let c = getRandomCard(winningCards.map(w => w.display));
@@ -211,13 +224,13 @@
                 </div>`;
         });
 
-        // 2. Préparation du ticket joueur (18 cartes)
-        const asCoeurOnTicket = Math.random() < 0.10;
-        const asCoeurIndex = asCoeurOnTicket ? Math.floor(Math.random() * 18) : -1;
-        
-        // On choisit une carte gagnante qui sera forcément sur le ticket (pas un As de coeur si possible pour ne pas court-circuiter)
-        const forcedWinCard = winningCards.find(c => !(c.v === 'A' && c.s === '❤️')) || winningCards[0];
+        // 2. Préparation du ticket (Garantie de gain de la V1)
+        const hasAsCoeur = Math.random() < 0.10;
+        const asCoeurIndex = hasAsCoeur ? Math.floor(Math.random() * 18) : -1;
         const forcedWinIndex = Math.floor(Math.random() * 18);
+        
+        // On choisit une carte gagnante qui sera forcément sur le ticket
+        const forcedWinCard = winningCards.find(c => !(c.v === 'A' && c.s === '❤️')) || winningCards[0];
 
         for(let i=0; i<18; i++) {
             let card;
@@ -226,11 +239,10 @@
             } else if (i === forcedWinIndex && i !== asCoeurIndex) {
                 card = forcedWinCard;
             } else {
-                // On évite de remettre un As de coeur par hasard
                 card = getRandomCard(['A❤️']);
             }
 
-            let t = (Math.random() < 0.4) ? 2 : (Math.random() < 0.8 ? 5 : 10);
+            let t = getRandomTime();
             let isAsCoeur = (card.v === 'A' && card.s === '❤️');
             playerCardsData.push({ ...card, time: t, scratched: false });
 
@@ -253,7 +265,7 @@
         const card = winningCards[index];
         if (card.v === 'A') {
             activeAceSuits.push(card.s);
-            document.getElementById('instruction').innerHTML = `<b>AS DE ${card.s} !</b> Bonus couleur activé !`;
+            document.getElementById('instruction').innerHTML = `<b>AS DE ${card.s} !</b> Grattez tous les ${card.s} !`;
         }
 
         if(revealedWinners === 5) {
@@ -273,9 +285,10 @@
         el.classList.add('scratched');
         revealedPlayerCards++;
 
+        // Victoire immédiate (Texte V1)
         if (card.v === 'A' && card.s === '❤️') {
             isGameOver = true;
-            document.getElementById('bonus-status').innerHTML = "🔥 <b>AS DE COEUR !</b> Victoire immédiate !";
+            document.getElementById('bonus-status').innerHTML = "🔥 <b>AS DE COEUR !</b><br>Orgasme immédiat autorisé !";
             document.getElementById('instruction').innerText = "PARTIE TERMINÉE";
             document.getElementById('game-ticket').classList.add('locked');
             return;
@@ -310,8 +323,9 @@
         const content = document.getElementById('heart-content');
         const rand = Math.random();
         
+        // Logique de protection de la V2
         if (totalMinutes >= 20) {
-            if (rand < 0.10) {
+            if (rand < 0.15) { // Un peu plus de chance de bonus si on a bien joué
                 content.innerText = '💦';
                 content.style.color = "var(--red)";
                 document.getElementById('bonus-status').innerHTML += "<br>💦 <b>BONUS PROTECTION :</b> Score élevé ! Jouissance autorisée !";
@@ -321,17 +335,18 @@
                 document.getElementById('bonus-status').innerHTML += "<br>Pas de bonus, mais protégé du malus !";
             }
         } else {
+            // Logique standard V1
             if (rand < 0.10) {
                 content.innerText = '💦';
                 content.style.color = "var(--red)";
-                document.getElementById('bonus-status').innerHTML += "<br>💦 <b>BONUS :</b> Jouissance autorisée !";
+                document.getElementById('bonus-status').innerHTML += "<br>💦 <b>BONUS :</b> Jouissance autorisée après le chrono !";
             } else if (rand < 0.55) {
                 content.innerText = '😈';
                 content.style.color = "purple";
                 totalMinutes *= 2;
                 document.getElementById('total-min').innerText = totalMinutes;
                 document.getElementById('total-min').style.transform = "scale(1.2)";
-                document.getElementById('bonus-status').innerHTML += "<br>😈 <b>MALUS :</b> Temps doublé ! Orgasme interdit !";
+                document.getElementById('bonus-status').innerHTML += "<br>😈 <b>MALUS :</b> Temps doublé ! Interdiction d'orgasme !";
             } else {
                 content.innerText = '❌';
                 content.style.color = "#ccc";
