@@ -307,7 +307,7 @@
         document.getElementById('total-min').innerText = totalMinutes;
         if(revealedPlayerCards === 18 && !isGameOver) {
             document.getElementById('heart-trigger').classList.remove('disabled');
-            document.getElementById('instruction').innerText = "Étape finale : Le Cœur Central";
+            document.getElementById('instruction').innerText = "Étape finale : Découvrez le Cœur Central";
         }
     }
 
@@ -324,28 +324,28 @@
             if (rand < 0.15) {
                 content.innerText = '💦';
                 content.style.color = "var(--red)";
-                document.getElementById('bonus-status').innerHTML += "<br>💦 <b>BONUS PROTECTION :</b> Jouissance autorisée !";
+                document.getElementById('bonus-status').innerHTML += "<br>💦 <b>ORGASME AUTORISÉ à la fin du chrono !</b>";
             } else {
                 content.innerText = '❌';
                 content.style.color = "#ccc";
-                document.getElementById('bonus-status').innerHTML += "<br>Pas de bonus, mais protégé du malus !";
+                document.getElementById('bonus-status').innerHTML += "<br>ORGASME REFUSÉ ! Masturbe-toi pour rien…";
             }
         } else {
             if (rand < 0.10) {
                 content.innerText = '💦';
                 content.style.color = "var(--red)";
-                document.getElementById('bonus-status').innerHTML += "<br>💦 <b>BONUS :</b> Jouissance autorisée après le chrono !";
+                document.getElementById('bonus-status').innerHTML += "<br>💦 <b>ORGASME AUTORISÉ à la fin du chrono !</b>";
             } else if (rand < 0.55) {
                 content.innerText = '😈';
                 content.style.color = "purple";
                 totalMinutes *= 2;
                 document.getElementById('total-min').innerText = totalMinutes;
                 document.getElementById('total-min').style.transform = "scale(1.2)";
-                document.getElementById('bonus-status').innerHTML += "<br>😈 <b>MALUS :</b> Temps doublé ! Orgasme interdit !";
+                document.getElementById('bonus-status').innerHTML += "<br>😈 <b>MALUS :</b> Temps doublé ! ORGASME REFUSÉ ! Masturbe-toi pour rien deux fois plus…";
             } else {
                 content.innerText = '❌';
                 content.style.color = "#ccc";
-                document.getElementById('bonus-status').innerHTML += "<br>Pas de bonus supplémentaire.";
+                document.getElementById('bonus-status').innerHTML += "ORGASME REFUSÉ ! Masturbe-toi pour rien…";
             }
         }
         document.getElementById('instruction').innerText = "Jeu terminé.";
