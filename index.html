@@ -202,17 +202,20 @@
         const winningZone = document.getElementById('winning-zone');
         const playerZone = document.getElementById('player-zone');
 
-        // 1. Génération 5 cartes gagnantes sans aucune restriction (tous les As possibles)
-        let winningAcesCount = 0;
-        while(winningCards.length < 5) {
-            let c = getRandomCard(winningCards.map(w => w.display));
-            // On limite juste à 2 As max en gagnant pour garder de l'intérêt au jeu
-            if (c.v === 'A') {
-                if (winningAcesCount >= 2) continue;
-                winningAcesCount++;
-            }
-            winningCards.push(c);
-        }
+        // 1. Génération 5 cartes gagnantes (Maximum 1 SEUL As autorisé)
+let winningAcesCount = 0;
+while(winningCards.length < 5) {
+    let c = getRandomCard(winningCards.map(w => w.display));
+    
+    // Si c'est un As (n'importe lequel, y compris l'As de Coeur)
+    if (c.v === 'A') {
+        // Si on a déjà un As dans la liste, on rejette celui-là et on recrée un tirage
+        if (winningAcesCount >= 1) continue; 
+        winningAcesCount++;
+    }
+    
+    winningCards.push(c);
+}
 
         winningCards.forEach((card, idx) => {
             const aceClass = card.v === 'A' ? 'is-ace-win' : '';
