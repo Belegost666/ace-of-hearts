@@ -97,7 +97,6 @@
             color: white; font-weight: bold; border-radius: 3px;
         }
 
-        /* Style spécial As gagnant */
         .card.is-ace-win {
             border: 2px solid var(--gold) !important;
             background-color: #fffde7;
@@ -178,13 +177,12 @@
     
     let winningCards = [];
     let playerCardsData = [];
-    let activeAceSuits = []; // Stocke les couleurs d'As révélées
+    let activeAceSuits = []; 
     let totalMinutes = 0;
     let revealedWinners = 0;
     let revealedPlayerCards = 0;
     let isGameOver = false;
 
-    // Fonction de la V1 pour les probas de temps
     function getRandomTime() {
         const rand = Math.random();
         if (rand < 0.40) return 2;
@@ -204,13 +202,14 @@
         const winningZone = document.getElementById('winning-zone');
         const playerZone = document.getElementById('player-zone');
 
-        // 1. Génération 5 cartes gagnantes (Max 1 As comme dans V2)
-        let hasAnyAce = false;
+        // 1. Génération 5 cartes gagnantes sans aucune restriction (tous les As possibles)
+        let winningAcesCount = 0;
         while(winningCards.length < 5) {
             let c = getRandomCard(winningCards.map(w => w.display));
+            // On limite juste à 2 As max en gagnant pour garder de l'intérêt au jeu
             if (c.v === 'A') {
-                if (hasAnyAce) continue;
-                hasAnyAce = true;
+                if (winningAcesCount >= 2) continue;
+                winningAcesCount++;
             }
             winningCards.push(c);
         }
@@ -224,13 +223,11 @@
                 </div>`;
         });
 
-        // 2. Préparation du ticket (Garantie de gain de la V1)
-        const hasAsCoeur = Math.random() < 0.10;
+        // 2. Préparation du ticket joueur
+        const hasAsCoeur = Math.random() < 0.12; 
         const asCoeurIndex = hasAsCoeur ? Math.floor(Math.random() * 18) : -1;
         const forcedWinIndex = Math.floor(Math.random() * 18);
-        
-        // On choisit une carte gagnante qui sera forcément sur le ticket
-        const forcedWinCard = winningCards.find(c => !(c.v === 'A' && c.s === '❤️')) || winningCards[0];
+        const forcedWinCard = winningCards[Math.floor(Math.random() * winningCards.length)];
 
         for(let i=0; i<18; i++) {
             let card;
@@ -265,7 +262,7 @@
         const card = winningCards[index];
         if (card.v === 'A') {
             activeAceSuits.push(card.s);
-            document.getElementById('instruction').innerHTML = `<b>AS DE ${card.s} !</b> Grattez tous les ${card.s} !`;
+            document.getElementById('instruction').innerHTML = `<b>AS DE ${card.s} !</b> Tous les ${card.s} gagnent !`;
         }
 
         if(revealedWinners === 5) {
@@ -285,7 +282,7 @@
         el.classList.add('scratched');
         revealedPlayerCards++;
 
-        // Victoire immédiate (Texte V1)
+        // La règle d'or : l'As de Coeur chez le joueur = Victoire
         if (card.v === 'A' && card.s === '❤️') {
             isGameOver = true;
             document.getElementById('bonus-status').innerHTML = "🔥 <b>AS DE COEUR !</b><br>Orgasme immédiat autorisé !";
@@ -323,19 +320,17 @@
         const content = document.getElementById('heart-content');
         const rand = Math.random();
         
-        // Logique de protection de la V2
         if (totalMinutes >= 20) {
-            if (rand < 0.15) { // Un peu plus de chance de bonus si on a bien joué
+            if (rand < 0.15) {
                 content.innerText = '💦';
                 content.style.color = "var(--red)";
-                document.getElementById('bonus-status').innerHTML += "<br>💦 <b>BONUS PROTECTION :</b> Score élevé ! Jouissance autorisée !";
+                document.getElementById('bonus-status').innerHTML += "<br>💦 <b>BONUS PROTECTION :</b> Jouissance autorisée !";
             } else {
                 content.innerText = '❌';
                 content.style.color = "#ccc";
                 document.getElementById('bonus-status').innerHTML += "<br>Pas de bonus, mais protégé du malus !";
             }
         } else {
-            // Logique standard V1
             if (rand < 0.10) {
                 content.innerText = '💦';
                 content.style.color = "var(--red)";
@@ -346,7 +341,7 @@
                 totalMinutes *= 2;
                 document.getElementById('total-min').innerText = totalMinutes;
                 document.getElementById('total-min').style.transform = "scale(1.2)";
-                document.getElementById('bonus-status').innerHTML += "<br>😈 <b>MALUS :</b> Temps doublé ! Interdiction d'orgasme !";
+                document.getElementById('bonus-status').innerHTML += "<br>😈 <b>MALUS :</b> Temps doublé ! Orgasme interdit !";
             } else {
                 content.innerText = '❌';
                 content.style.color = "#ccc";
