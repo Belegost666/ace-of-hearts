@@ -294,37 +294,39 @@
     }
 
     function scratchHeart() {
-        if (isGameOver) return;
-        const trigger = document.getElementById('heart-trigger');
-        if(trigger.classList.contains('disabled')) return;
-        trigger.classList.add('scratched-heart');
-        const content = document.getElementById('heart-content');
-        const rand = Math.random();
-        
-        // 10% pour le bonus 💦
-        if (rand < 0.10) {
-            content.innerText = '💦';
-            content.style.color = "var(--red)";
-            document.getElementById('bonus-status').innerHTML += "<br>💦 <b>Orgasme autorisé après le chrono !";
-        } 
-        // 30% pour le malus 😈 (seuil à 0.40 car 0.10 + 0.30 = 0.40)
-        else if (rand < 0.40) {
-            content.innerText = '😈';
-            content.style.color = "purple";
-            totalMinutes *= 2;
-            document.getElementById('total-min').innerText = totalMinutes;
-            document.getElementById('total-min').style.transform = "scale(1.2)";
-            document.getElementById('bonus-status').innerHTML += "<br>😈 <b>MALUS :</b> Temps doublé ! Orgasme interdit !";
-        } 
-        // 60% de rien ❌
-        else {
-            content.innerText = '❌';
-            content.style.color = "#ccc";
-            document.getElementById('bonus-status').innerHTML += "<br>Masturbez-vous le temps indiqué mais vous n'avez pas le droit de jouir !";
-        }
-        document.getElementById('instruction').innerText = "Jeu terminé.";
-        isGameOver = true;
+    if (isGameOver) return;
+    const trigger = document.getElementById('heart-trigger');
+    if(trigger.classList.contains('disabled')) return;
+    
+    trigger.classList.add('scratched-heart');
+    const content = document.getElementById('heart-content');
+    const rand = Math.random();
+    
+    // 10% pour le bonus 💦 (de 0 à 0.10)
+    if (rand < 0.10) {
+        content.innerText = '💦';
+        content.style.color = "var(--red)";
+        document.getElementById('bonus-status').innerHTML += "<br>💦 <b>BONUS :</b> Jouissance autorisée après le chrono !";
+    } 
+    // 45% pour le malus 😈 (de 0.10 à 0.55 car 0.10 + 0.45 = 0.55)
+    else if (rand < 0.55) {
+        content.innerText = '😈';
+        content.style.color = "purple";
+        totalMinutes *= 2;
+        document.getElementById('total-min').innerText = totalMinutes;
+        document.getElementById('total-min').style.transform = "scale(1.2)";
+        document.getElementById('bonus-status').innerHTML += "<br>😈 <b>MALUS :</b> Temps doublé ! Interdiction d'orgasme !";
+    } 
+    // 45% de rien ❌ (le reste de 0.55 à 1.00)
+    else {
+        content.innerText = '❌';
+        content.style.color = "#ccc";
+        document.getElementById('bonus-status').innerHTML += "<br>Pas de bonus supplémentaire.";
     }
+    
+    document.getElementById('instruction').innerText = "Jeu terminé.";
+    isGameOver = true;
+}
 
     init();
 </script>
