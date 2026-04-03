@@ -95,7 +95,6 @@
             color: white; font-weight: bold; border-radius: 3px;
         }
 
-        /* Style spécial pour l'As dans les cartes gagnantes */
         .card.is-ace-win {
             border: 2px solid var(--gold) !important;
             background-color: #fffde7;
@@ -174,7 +173,7 @@
     
     let winningCards = [];
     let playerCardsData = [];
-    let activeAceSuits = []; // Stocke les couleurs d'As révélées
+    let activeAceSuits = [];
     let totalMinutes = 0;
     let revealedWinners = 0;
     let revealedPlayerCards = 0;
@@ -192,7 +191,7 @@
         const winningZone = document.getElementById('winning-zone');
         const playerZone = document.getElementById('player-zone');
 
-        // Génération 5 cartes gagnantes (Max 1 As)
+        // 1. Génération des 5 cartes gagnantes (Max 1 As)
         let hasAnyAce = false;
         while(winningCards.length < 5) {
             let c = getRandomCard(winningCards.map(w => w.display));
@@ -212,11 +211,25 @@
                 </div>`;
         });
 
+        // 2. Préparation du ticket joueur (18 cartes)
         const asCoeurOnTicket = Math.random() < 0.10;
         const asCoeurIndex = asCoeurOnTicket ? Math.floor(Math.random() * 18) : -1;
+        
+        // On choisit une carte gagnante qui sera forcément sur le ticket (pas un As de coeur si possible pour ne pas court-circuiter)
+        const forcedWinCard = winningCards.find(c => !(c.v === 'A' && c.s === '❤️')) || winningCards[0];
+        const forcedWinIndex = Math.floor(Math.random() * 18);
 
         for(let i=0; i<18; i++) {
-            let card = (i === asCoeurIndex) ? { v: 'A', s: '❤️', display: 'A❤️', color: 'red' } : getRandomCard(['A❤️']);
+            let card;
+            if (i === asCoeurIndex) {
+                card = { v: 'A', s: '❤️', display: 'A❤️', color: 'red' };
+            } else if (i === forcedWinIndex && i !== asCoeurIndex) {
+                card = forcedWinCard;
+            } else {
+                // On évite de remettre un As de coeur par hasard
+                card = getRandomCard(['A❤️']);
+            }
+
             let t = (Math.random() < 0.4) ? 2 : (Math.random() < 0.8 ? 5 : 10);
             let isAsCoeur = (card.v === 'A' && card.s === '❤️');
             playerCardsData.push({ ...card, time: t, scratched: false });
@@ -240,7 +253,7 @@
         const card = winningCards[index];
         if (card.v === 'A') {
             activeAceSuits.push(card.s);
-            document.getElementById('instruction').innerHTML = `<b>AS DE ${card.s} !</b> Grattez tous les ${card.s} !`;
+            document.getElementById('instruction').innerHTML = `<b>AS DE ${card.s} !</b> Bonus couleur activé !`;
         }
 
         if(revealedWinners === 5) {
@@ -260,7 +273,6 @@
         el.classList.add('scratched');
         revealedPlayerCards++;
 
-        // Victoire immédiate As de Coeur Joueur
         if (card.v === 'A' && card.s === '❤️') {
             isGameOver = true;
             document.getElementById('bonus-status').innerHTML = "🔥 <b>AS DE COEUR !</b> Victoire immédiate !";
@@ -269,7 +281,6 @@
             return;
         }
 
-        // Vérification du gain : soit match direct, soit règle de la couleur de l'As gagnant
         const isDirectMatch = winningCards.some(wc => wc.display === card.display);
         const isAceColorBonus = activeAceSuits.includes(card.s);
 
