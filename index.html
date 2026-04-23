@@ -3,80 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AS DE COEUR - VERSION ULTIME</title>
+    <title>AS DE CŒUR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Cormorant+Garamond:wght@400;600&family=Oswald:wght@300;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --gold: #c5a059;
-            --red: #d32f2f;
-            --dark-red: #8b0000;
-            --cream: #fff9e6;
-            --shadow: rgba(0,0,0,0.3);
+            --crimson: #b01b1b;
+            --crimson-deep: #7a0000;
+            --crimson-light: #e53935;
+            --gold: #c9a84c;
+            --gold-light: #e8d08a;
+            --gold-dark: #9a7730;
+            --cream: #fdf6e3;
+            --cream-dark: #f0e6c8;
+            --ink: #1a0a00;
+            --shadow: rgba(0,0,0,0.5);
         }
 
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: radial-gradient(circle, var(--dark-red) 0%, #1a0000 100%);
-            color: #333;
+            font-family: 'Cormorant Garamond', serif;
+            background: var(--ink);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 10px;
-            margin: 0;
-            min-height: 100vh;
+            padding: 20px 10px 40px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 40px,
+                    rgba(201,168,76,0.03) 40px,
+                    rgba(201,168,76,0.03) 80px
+                );
+            pointer-events: none;
+            z-index: 0;
         }
 
         .ticket {
-            background-color: var(--cream);
+            background: var(--cream);
             width: 100%;
-            max-width: 480px;
-            border: 6px double var(--gold);
-            border-radius: 15px;
-            padding: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            max-width: 500px;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+            box-shadow:
+                0 0 0 1px var(--gold-dark),
+                0 0 0 5px var(--crimson-deep),
+                0 0 0 6px var(--gold-dark),
+                0 30px 80px rgba(0,0,0,0.8),
+                0 0 120px rgba(176,27,27,0.15);
+        }
+
+        /* Perforations haut/bas */
+        .perf-top, .perf-bottom {
+            height: 16px;
+            background: var(--crimson-deep);
+            position: relative;
+            overflow: hidden;
+        }
+        .perf-top::after, .perf-bottom::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: -8px;
+            right: -8px;
+            height: 22px;
+            background: radial-gradient(circle at center, var(--ink) 6px, transparent 6px) repeat-x;
+            background-size: 20px 22px;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(180deg, var(--crimson) 0%, var(--crimson-deep) 100%);
+            padding: 20px 15px 16px;
             text-align: center;
             position: relative;
+            border-bottom: 3px solid var(--gold);
         }
 
-        .header {
-            background: linear-gradient(to bottom, var(--red), var(--dark-red));
-            color: white;
-            padding: 10px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            border: 1px solid var(--gold);
+        .header::before, .header::after {
+            content: '♥';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5em;
+            color: rgba(201,168,76,0.4);
         }
+        .header::before { left: 14px; }
+        .header::after { right: 14px; }
 
-        .instruction-box {
-            background: #fff;
-            border: 1px dashed var(--red);
-            padding: 5px;
-            margin-bottom: 10px;
-            font-size: 0.8em;
-            font-weight: bold;
-            color: var(--red);
-            min-height: 1.2em;
-        }
-
-        .section-title {
-            font-size: 0.75em;
-            font-weight: bold;
+        .header-sub {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 300;
+            letter-spacing: 0.35em;
+            font-size: 0.62em;
+            color: var(--gold-light);
             text-transform: uppercase;
-            color: var(--dark-red);
-            margin: 8px 0 5px;
-            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 4px;
         }
 
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4em;
+            font-weight: 900;
+            color: var(--gold-light);
+            letter-spacing: 0.04em;
+            line-height: 1;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+        }
+
+        .header h1 span { color: white; }
+
+        /* Body */
+        .body {
+            padding: 16px 14px;
+            background: var(--cream);
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.04'%3E%3Cpath d='M30 0 L32 28 L60 30 L32 32 L30 60 L28 32 L0 30 L28 28z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Instruction banner */
+        .instruction-box {
+            background: var(--crimson-deep);
+            color: var(--gold-light);
+            font-family: 'Oswald', sans-serif;
+            font-weight: 300;
+            letter-spacing: 0.12em;
+            font-size: 0.78em;
+            text-transform: uppercase;
+            padding: 7px 12px;
+            text-align: center;
+            border-radius: 2px;
+            margin-bottom: 14px;
+            min-height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.4s;
+        }
+
+        /* Section titles */
+        .section-title {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 500;
+            font-size: 0.65em;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--crimson-deep);
+            text-align: center;
+            margin: 14px 0 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
         .section-title::before, .section-title::after {
-            content: ""; flex: 1; height: 1px; background: var(--gold); margin: 0 8px;
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
         }
 
-        .grid-winning { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-bottom: 15px; }
-        .grid-player { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
+        /* Winning grid */
+        .grid-winning {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+            margin-bottom: 4px;
+        }
 
+        /* Player grid */
+        .grid-player {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 5px;
+        }
+
+        /* Cards */
         .card {
             aspect-ratio: 2/2.8;
             background: white;
-            border: 1px solid #ccc;
+            border: 1px solid #ddd;
             border-radius: 4px;
             position: relative;
             cursor: pointer;
@@ -84,100 +202,318 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 0.9em;
-            box-shadow: 1px 1px 3px var(--shadow);
+            font-size: 0.82em;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8);
+            transition: transform 0.15s, box-shadow 0.15s;
+            overflow: hidden;
+        }
+
+        .card:not(.scratched):hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
         .card .cover {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, var(--gold) 0%, #e8d1a7 50%, var(--gold) 100%);
+            inset: 0;
+            background: linear-gradient(135deg,
+                #b8860b 0%, #daa520 20%, #ffd700 35%,
+                #daa520 50%, #b8860b 65%, #daa520 80%, #ffd700 100%);
             z-index: 2;
-            display: flex; align-items: center; justify-content: center;
-            color: white; font-weight: bold; border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s;
+            transform-origin: top;
+        }
+
+        .cover-icon {
+            font-size: 1.4em;
+            opacity: 0.7;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+        }
+
+        .card.scratched .cover {
+            transform: rotateX(90deg) scaleY(0);
+            opacity: 0;
+            pointer-events: none;
         }
 
         .card.is-ace-win {
-            border: 2px solid var(--gold) !important;
-            background-color: #fffde7;
+            border-color: var(--gold);
+            background: #fffdf0;
         }
 
-        .card.scratched .cover { display: none; }
-        .symbol { font-size: 1.1em; font-weight: 900; line-height: 1.1; }
-        .minutes { color: var(--dark-red); font-size: 0.65em; font-weight: bold; }
+        .card.win-highlight {
+            border-color: var(--crimson) !important;
+            box-shadow: 0 0 0 2px var(--crimson), 0 4px 12px rgba(176,27,27,0.3) !important;
+            animation: winPop 0.4s ease;
+        }
+
+        @keyframes winPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .card.ace-highlight {
+            border-color: #27ae60 !important;
+            box-shadow: 0 0 0 2px #27ae60, 0 4px 12px rgba(39,174,96,0.3) !important;
+        }
+
+        .symbol {
+            font-size: 1.1em;
+            font-weight: 700;
+            line-height: 1.1;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .minutes {
+            color: var(--crimson-deep);
+            font-size: 0.6em;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            margin-top: 2px;
+        }
+
+        /* Heart */
+        .heart-wrapper {
+            display: flex;
+            justify-content: center;
+            margin: 4px 0;
+        }
 
         .heart-container {
-            margin: 15px auto;
-            width: 70px; height: 70px;
+            width: 80px;
+            height: 80px;
             cursor: pointer;
             position: relative;
             background: white;
-            border-radius: 10px;
+            border-radius: 8px;
             border: 2px solid var(--gold);
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2), 0 0 0 1px rgba(201,168,76,0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+            overflow: hidden;
         }
 
-        .heart-img { width: 100%; height: auto; max-height: 100%; transition: opacity 0.4s; pointer-events: none; }
+        .heart-container:not(.disabled):hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 24px rgba(176,27,27,0.35), 0 0 0 1px var(--gold);
+        }
+
+        .heart-container.disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+            filter: grayscale(0.4);
+        }
+
+        .heart-img {
+            width: 70%;
+            height: auto;
+            transition: opacity 0.4s, transform 0.4s;
+            pointer-events: none;
+            object-fit: contain;
+        }
+
         .heart-reveal {
-            position: absolute; width: 100%; height: 100%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 2.2em; font-weight: bold; color: black;
-            opacity: 0; z-index: 1;
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.6em;
+            opacity: 0;
+            z-index: 1;
+            transition: opacity 0.4s;
         }
 
-        .scratched-heart .heart-img { opacity: 0; }
-        .scratched-heart .heart-reveal { opacity: 1; }
-
-        .result-panel { margin-top: 15px; padding: 10px; background: white; border: 2px solid var(--gold); border-radius: 10px; font-weight: bold; }
-        #total-min { font-size: 2.2em; color: var(--red); display: inline-block; transition: transform 0.3s ease; }
-        .bonus-msg { margin-top: 5px; color: var(--dark-red); font-size: 0.85em; min-height: 2.2em; line-height: 1.3;}
-        
-        .btn-new-game { 
-            margin-top: 20px; padding: 12px 30px; 
-            background: var(--gold); border: 2px solid white; color: white; 
-            border-radius: 30px; cursor: pointer; text-transform: uppercase; font-weight: bold;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        .scratched-heart .heart-img {
+            opacity: 0;
+            transform: scale(0.6);
         }
-        .btn-new-game:hover { background: #d4af37; }
 
-        .disabled { cursor: not-allowed; opacity: 0.6; pointer-events: none; }
+        .scratched-heart .heart-reveal {
+            opacity: 1;
+        }
+
+        /* Result panel */
+        .result-panel {
+            margin-top: 14px;
+            padding: 14px 12px 10px;
+            background: linear-gradient(180deg, white 0%, #fdf8ee 100%);
+            border: 1px solid var(--gold-dark);
+            border-radius: 4px;
+            text-align: center;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
+        }
+
+        .result-label {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 300;
+            letter-spacing: 0.25em;
+            font-size: 0.62em;
+            text-transform: uppercase;
+            color: var(--crimson-deep);
+            margin-bottom: 4px;
+        }
+
+        .result-value {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        #total-min {
+            font-family: 'Playfair Display', serif;
+            font-size: 3em;
+            font-weight: 900;
+            color: var(--crimson);
+            line-height: 1;
+            transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), color 0.3s;
+        }
+
+        .result-unit {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 300;
+            font-size: 0.9em;
+            color: #999;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .result-unit::before {
+            content: 'min';
+        }
+
+        #bonus-status {
+            margin-top: 8px;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 500;
+            font-size: 0.78em;
+            letter-spacing: 0.06em;
+            color: var(--crimson-deep);
+            min-height: 2.4em;
+            line-height: 1.5;
+        }
+
+        /* New game button */
+        .btn-new-game {
+            margin-top: 24px;
+            padding: 13px 36px;
+            background: transparent;
+            border: 2px solid var(--gold);
+            color: var(--gold-light);
+            font-family: 'Oswald', sans-serif;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            font-size: 0.78em;
+            text-transform: uppercase;
+            border-radius: 2px;
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            transition: color 0.3s;
+        }
+
+        .btn-new-game::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--gold);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s;
+            z-index: -1;
+        }
+
+        .btn-new-game:hover {
+            color: var(--ink);
+        }
+
+        .btn-new-game:hover::before {
+            transform: scaleX(1);
+        }
+
+        .disabled { pointer-events: none; opacity: 0.45; }
         .locked { pointer-events: none !important; }
+
+        /* Animate in */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .ticket { animation: fadeUp 0.6s ease both; }
+        .btn-new-game { animation: fadeUp 0.6s 0.3s ease both; }
+
+        /* Pulse on total update */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.25); color: var(--crimson-light); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse { animation: pulse 0.4s ease; }
     </style>
 </head>
 <body>
 
 <div class="ticket" id="game-ticket">
-    <div class="header"><h1 style="margin:0; font-size: 1.6em;">AS DE CŒUR</h1></div>
-    <div class="instruction-box" id="instruction">Étape 1 : Révélez les 5 cartes gagnantes</div>
+    <div class="perf-top"></div>
 
-    <div class="section-title">Cartes Gagnantes</div>
-    <div id="winning-zone" class="grid-winning"></div>
-
-    <div class="section-title">Le Cœur Central</div>
-    <div id="heart-trigger" class="heart-container disabled" onclick="scratchHeart()">
-        <img src="coeur.png" alt="Cœur central" class="heart-img">
-        <div class="heart-reveal" id="heart-content">?</div>
+    <div class="header">
+        <div class="header-sub">Jeu à gratter</div>
+        <h1><span>AS</span> DE CŒUR</h1>
     </div>
 
-    <div class="section-title">Vos 18 Cartes</div>
-    <div id="player-zone" class="grid-player disabled"></div>
+    <div class="body">
+        <div class="instruction-box" id="instruction">Étape 1 — Révélez les 5 cartes gagnantes</div>
 
-    <div class="result-panel">
-        <div>TEMPS CUMULÉ</div>
-        <span id="total-min">0</span> <small>min</small>
-        <div id="bonus-status" class="bonus-msg"></div>
+        <div class="section-title">Cartes Gagnantes</div>
+        <div id="winning-zone" class="grid-winning"></div>
+
+        <div class="section-title">Le Cœur Central</div>
+        <div class="heart-wrapper">
+            <div id="heart-trigger" class="heart-container disabled" onclick="scratchHeart()">
+                <img src="coeur.png" alt="Cœur central" class="heart-img"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.opacity='0.25'; this.parentElement.querySelector('.heart-fallback').style.display='flex'">
+                <div class="heart-reveal" id="heart-content"></div>
+                <div class="heart-fallback" style="display:none; position:absolute; inset:0; align-items:center; justify-content:center; font-size:2.8em; opacity:0.4;">♥</div>
+            </div>
+        </div>
+
+        <div class="section-title">Vos 18 Cartes</div>
+        <div id="player-zone" class="grid-player disabled"></div>
+
+        <div class="result-panel">
+            <div class="result-label">Temps cumulé</div>
+            <div class="result-value">
+                <span id="total-min">0</span>
+                <span class="result-unit"></span>
+            </div>
+            <div id="bonus-status"></div>
+        </div>
     </div>
+
+    <div class="perf-bottom"></div>
 </div>
 
-<button class="btn-new-game" onclick="window.location.reload()">Nouvelle Partie</button>
+<button class="btn-new-game" onclick="window.location.reload()">&#8635; Nouvelle Partie</button>
 
 <script>
     const suits = ['❤️', '♦️', '♣️', '♠️'];
     const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
-    
+
     let winningCards = [];
     let playerCardsData = [];
-    let activeAceSuits = []; 
+    let activeAceSuits = [];
     let totalMinutes = 0;
     let revealedWinners = 0;
     let revealedPlayerCards = 0;
@@ -202,37 +538,37 @@
         const winningZone = document.getElementById('winning-zone');
         const playerZone = document.getElementById('player-zone');
 
-        // 1. Génération 5 cartes gagnantes (Maximum 1 SEUL As autorisé)
-let winningAcesCount = 0;
-while(winningCards.length < 5) {
-    let c = getRandomCard(winningCards.map(w => w.display));
-    
-    // Si c'est un As (n'importe lequel, y compris l'As de Coeur)
-    if (c.v === 'A') {
-        // Si on a déjà un As dans la liste, on rejette celui-là et on recrée un tirage
-        if (winningAcesCount >= 1) continue; 
-        winningAcesCount++;
-    }
-    
-    winningCards.push(c);
-}
+        // 1. Génération 5 cartes gagnantes (max 1 As)
+        let winningAcesCount = 0;
+        while (winningCards.length < 5) {
+            let c = getRandomCard(winningCards.map(w => w.display));
+            if (c.v === 'A') {
+                if (winningAcesCount >= 1) continue;
+                winningAcesCount++;
+            }
+            winningCards.push(c);
+        }
 
         winningCards.forEach((card, idx) => {
             const aceClass = card.v === 'A' ? 'is-ace-win' : '';
-            winningZone.innerHTML += `
-                <div class="card ${aceClass}" onclick="revealWinner(this, ${idx})">
-                    <div class="cover">?</div>
-                    <div style="color: ${card.color}" class="symbol">${card.display}</div>
+            const div = document.createElement('div');
+            div.className = `card ${aceClass}`;
+            div.onclick = () => revealWinner(div, idx);
+            div.innerHTML = `
+                <div class="cover"><span class="cover-icon">♦</span></div>
+                <div style="color:${card.color}">
+                    <div class="symbol">${card.display}</div>
                 </div>`;
+            winningZone.appendChild(div);
         });
 
-        // 2. Préparation du ticket joueur
-        const hasAsCoeur = Math.random() < 0.12; 
+        // 2. Préparation ticket joueur
+        const hasAsCoeur = Math.random() < 0.12;
         const asCoeurIndex = hasAsCoeur ? Math.floor(Math.random() * 18) : -1;
         const forcedWinIndex = Math.floor(Math.random() * 18);
         const forcedWinCard = winningCards[Math.floor(Math.random() * winningCards.length)];
 
-        for(let i=0; i<18; i++) {
+        for (let i = 0; i < 18; i++) {
             let card;
             if (i === asCoeurIndex) {
                 card = { v: 'A', s: '❤️', display: 'A❤️', color: 'red' };
@@ -246,32 +582,36 @@ while(winningCards.length < 5) {
             let isAsCoeur = (card.v === 'A' && card.s === '❤️');
             playerCardsData.push({ ...card, time: t, scratched: false });
 
-            playerZone.innerHTML += `
-                <div id="p-card-${i}" class="card" onclick="revealPlayerCard(${i})">
-                    <div class="cover">?</div>
-                    <div style="color: ${card.color}">
-                        <div class="symbol">${card.display}</div>
-                        <div class="minutes">${isAsCoeur ? '🎁' : t + ' min'}</div>
-                    </div>
+            const div = document.createElement('div');
+            div.id = `p-card-${i}`;
+            div.className = 'card';
+            div.onclick = () => revealPlayerCard(i);
+            div.innerHTML = `
+                <div class="cover"><span class="cover-icon">♦</span></div>
+                <div style="color:${card.color}">
+                    <div class="symbol">${card.display}</div>
+                    <div class="minutes">${isAsCoeur ? '🎁' : t + ' min'}</div>
                 </div>`;
+            playerZone.appendChild(div);
         }
     }
 
     function revealWinner(el, index) {
-        if(el.classList.contains('scratched')) return;
+        if (el.classList.contains('scratched')) return;
         el.classList.add('scratched');
         revealedWinners++;
 
         const card = winningCards[index];
         if (card.v === 'A') {
             activeAceSuits.push(card.s);
-            document.getElementById('instruction').innerHTML = `<b>AS DE ${card.s} !</b> Tous les ${card.s} gagnent !`;
+            document.getElementById('instruction').innerHTML =
+                `<b>AS DE ${card.s} !</b>&nbsp; Tous les ${card.s} gagnent !`;
         }
 
-        if(revealedWinners === 5) {
+        if (revealedWinners === 5) {
             document.getElementById('player-zone').classList.remove('disabled');
-            if(activeAceSuits.length === 0) {
-                document.getElementById('instruction').innerText = "Étape 2 : Découvrez vos 18 cartes";
+            if (activeAceSuits.length === 0) {
+                document.getElementById('instruction').textContent = 'Étape 2 — Découvrez vos 18 cartes';
             }
         }
     }
@@ -280,16 +620,16 @@ while(winningCards.length < 5) {
         const card = playerCardsData[index];
         const el = document.getElementById(`p-card-${index}`);
         if (card.scratched || isGameOver) return;
-        
+
         card.scratched = true;
         el.classList.add('scratched');
         revealedPlayerCards++;
 
-        // La règle d'or : l'As de Coeur chez le joueur = Victoire
+        // As de Cœur = victoire immédiate
         if (card.v === 'A' && card.s === '❤️') {
             isGameOver = true;
-            document.getElementById('bonus-status').innerHTML = "🔥 <b>AS DE COEUR !</b><br>Orgasme immédiat autorisé !";
-            document.getElementById('instruction').innerText = "PARTIE TERMINÉE";
+            document.getElementById('bonus-status').innerHTML = '🔥 <b>AS DE CŒUR !</b> — Orgasme immédiat autorisé !';
+            document.getElementById('instruction').textContent = 'PARTIE TERMINÉE';
             document.getElementById('game-ticket').classList.add('locked');
             return;
         }
@@ -299,59 +639,63 @@ while(winningCards.length < 5) {
 
         if (isDirectMatch || isAceColorBonus) {
             totalMinutes += card.time;
-            el.style.border = isAceColorBonus ? "2px solid #27ae60" : "2px solid var(--red)";
-            el.style.backgroundColor = "#fff9e6";
+            el.classList.add(isAceColorBonus ? 'ace-highlight' : 'win-highlight');
         }
-        
+
         updateUI();
     }
 
     function updateUI() {
-        document.getElementById('total-min').innerText = totalMinutes;
-        if(revealedPlayerCards === 18 && !isGameOver) {
+        const el = document.getElementById('total-min');
+        el.textContent = totalMinutes;
+        el.classList.remove('pulse');
+        void el.offsetWidth; // reflow
+        el.classList.add('pulse');
+
+        if (revealedPlayerCards === 18 && !isGameOver) {
             document.getElementById('heart-trigger').classList.remove('disabled');
-            document.getElementById('instruction').innerText = "Étape finale : Découvrez le Cœur Central";
+            document.getElementById('instruction').textContent = 'Étape finale — Découvrez le Cœur Central';
         }
     }
 
     function scratchHeart() {
         if (isGameOver) return;
         const trigger = document.getElementById('heart-trigger');
-        if(trigger.classList.contains('disabled')) return;
-        
+        if (trigger.classList.contains('disabled')) return;
+
         trigger.classList.add('scratched-heart');
         const content = document.getElementById('heart-content');
         const rand = Math.random();
-        
+
         if (totalMinutes >= 20) {
             if (rand < 0.15) {
-                content.innerText = '💦';
-                content.style.color = "var(--red)";
-                document.getElementById('bonus-status').innerHTML += "<br>💦 <b>ORGASME AUTORISÉ à la fin du chrono !</b>";
+                content.textContent = '💦';
+                document.getElementById('bonus-status').innerHTML =
+                    '💦 <b>ORGASME AUTORISÉ</b> à la fin du chrono !';
             } else {
-                content.innerText = '❌';
-                content.style.color = "#ccc";
-                document.getElementById('bonus-status').innerHTML += "<br>ORGASME REFUSÉ ! Masturbe-toi pour rien…";
+                content.textContent = '❌';
+                document.getElementById('bonus-status').innerHTML =
+                    'ORGASME REFUSÉ ! Masturbe-toi pour rien…';
             }
         } else {
             if (rand < 0.10) {
-                content.innerText = '💦';
-                content.style.color = "var(--red)";
-                document.getElementById('bonus-status').innerHTML += "<br>💦 <b>ORGASME AUTORISÉ à la fin du chrono !</b>";
+                content.textContent = '💦';
+                document.getElementById('bonus-status').innerHTML =
+                    '💦 <b>ORGASME AUTORISÉ</b> à la fin du chrono !';
             } else if (rand < 0.55) {
-                content.innerText = '😈';
-                content.style.color = "purple";
+                content.textContent = '😈';
                 totalMinutes *= 2;
-                document.getElementById('total-min').innerText = totalMinutes;
-                document.getElementById('total-min').style.transform = "scale(1.2)";
-                document.getElementById('bonus-status').innerHTML += "<br>😈 <b>MALUS :</b> Temps doublé ! ORGASME REFUSÉ ! Masturbe-toi pour rien deux fois plus…";
+                document.getElementById('total-min').textContent = totalMinutes;
+                document.getElementById('bonus-status').innerHTML =
+                    '😈 <b>MALUS :</b> Temps doublé ! ORGASME REFUSÉ ! Masturbe-toi pour rien deux fois plus…';
             } else {
-                content.innerText = '❌';
-                content.style.color = "#ccc";
-                document.getElementById('bonus-status').innerHTML += "ORGASME REFUSÉ ! Masturbe-toi pour rien…";
+                content.textContent = '❌';
+                document.getElementById('bonus-status').innerHTML =
+                    'ORGASME REFUSÉ ! Masturbe-toi pour rien…';
             }
         }
-        document.getElementById('instruction').innerText = "Jeu terminé.";
+
+        document.getElementById('instruction').textContent = 'Jeu terminé.';
         isGameOver = true;
     }
 
