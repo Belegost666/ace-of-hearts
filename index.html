@@ -695,11 +695,11 @@
 
         if (totalMinutes >= 20) {
             // Si le temps cumulé est SUPÉRIEUR ou ÉGAL à 20 min
-            if (rand < 0.15) { // 15% de chance d'orgasme normal
+            if (rand < 0.10) { // 10% de chance d'orgasme normal
                 content.textContent = '💦';
                 document.getElementById('bonus-status').innerHTML =
                     '💦 <b>ORGASME AUTORISÉ</b> à la fin du chrono !';
-            } else if (rand < 0.45) { // 30% de chance d'orgasme RUINÉ (Nouveau !)
+            } else if (rand < 0.30) { // 20% de chance d'orgasme RUINÉ (Nouveau !)
                 content.textContent = '🥀';
                 document.getElementById('bonus-status').innerHTML =
                     '✂️ <b>ORGASME RUINÉ !</b> Masturbe-toi pendant tout le chrono, et ruine tout juste avant de jouir !';
@@ -720,13 +720,13 @@
                 document.getElementById('total-min').textContent = totalMinutes;
                 document.getElementById('bonus-status').innerHTML =
                     '😈 <b>MALUS : TEMPS DOUBLÉ ! ORGASME RUINÉ !</b> Masturbe-toi deux fois plus longtemps… et ruine tout juste avant de jouir !';
-            } else if (rand < 0.60) { // 30% de chance de temps doublé normal + refusé
+            } else if (rand < 0.75) { // 45% de chance de temps doublé normal + refusé
                 content.textContent = '😈';
                 totalMinutes *= 2;
                 document.getElementById('total-min').textContent = totalMinutes;
                 document.getElementById('bonus-status').innerHTML =
                     '🔥 <b>MALUS :</b> TEMPS DOUBLÉ ! ORGASME REFUSÉ ! Masturbe-toi pour rien deux fois plus longtemps…';
-            } else { // 40% de chance d'orgasme refusé simple
+            } else { // 25% de chance d'orgasme refusé simple
                 content.textContent = '❌';
                 document.getElementById('bonus-status').innerHTML =
                     'ORGASME REFUSÉ ! Masturbe-toi pour rien…';
