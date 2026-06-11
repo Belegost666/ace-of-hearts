@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AS DE CŒUR</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Cormorant+Garamond:wght@400;600&family=Oswald:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght=700;900&family=Cormorant+Garamond:wght=400;600&family=Oswald:wght=300;500&display=swap" rel="stylesheet">
     <style>
         :root {
             --crimson: #b01b1b;
@@ -625,12 +625,18 @@
         el.classList.add('scratched');
         revealedPlayerCards++;
 
-        // As de Cœur = victoire immédiate
+        // As de Cœur = Modification des règles selon tes consignes
         if (card.v === 'A' && card.s === '❤️') {
             isGameOver = true;
-            document.getElementById('bonus-status').innerHTML = '🔥 <b>AS DE CŒUR !</b> — Orgasme immédiat autorisé !';
+            if (totalMinutes < 20) {
+                totalMinutes *= 2;
+            }
+            totalMinutes += 10;
+            
+            document.getElementById('bonus-status').innerHTML = '🔥 <b>AS DE CŒUR !</b> — Temps doublé (< 20min) + 10 min. Masturbe-toi pendant le temps indiqué, orgasme autorisé ensuite !';
             document.getElementById('instruction').textContent = 'PARTIE TERMINÉE';
             document.getElementById('game-ticket').classList.add('locked');
+            updateUI();
             return;
         }
 
