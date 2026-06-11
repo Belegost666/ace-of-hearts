@@ -262,6 +262,24 @@
             box-shadow: 0 0 0 2px #27ae60, 0 4px 12px rgba(39,174,96,0.3) !important;
         }
 
+        /* Effet lumineux pulsant pour l'As de Cœur */
+        .card.ace-coeur-glow {
+            border-color: var(--crimson-light) !important;
+            box-shadow: 0 0 15px var(--crimson-light), inset 0 0 10px rgba(255, 215, 0, 0.6) !important;
+            animation: aceGlow 1.5s infinite alternate ease-in-out;
+        }
+
+        @keyframes aceGlow {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 10px var(--crimson-light), inset 0 0 5px rgba(255, 215, 0, 0.4);
+            }
+            100% {
+                transform: scale(1.05);
+                box-shadow: 0 0 25px var(--crimson-light), 0 0 15px var(--gold), inset 0 0 15px rgba(255, 215, 0, 0.8);
+            }
+        }
+
         .symbol {
             font-size: 1.1em;
             font-weight: 700;
@@ -629,6 +647,7 @@
         // As de Cœur = Modification des règles selon tes consignes
         if (card.v === 'A' && card.s === '❤️') {
             isGameOver = true;
+            el.classList.add('ace-coeur-glow');
             if (totalMinutes < 20) {
                 totalMinutes *= 2;
             }
