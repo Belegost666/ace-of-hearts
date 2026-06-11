@@ -276,6 +276,7 @@
             font-weight: 300;
             letter-spacing: 0.05em;
             margin-top: 2px;
+            text-align: center;
         }
 
         /* Heart */
@@ -590,7 +591,7 @@
                 <div class="cover"><span class="cover-icon">♦</span></div>
                 <div style="color:${card.color}">
                     <div class="symbol">${card.display}</div>
-                    <div class="minutes">${isAsCoeur ? '🎁' : t + ' min'}</div>
+                    <div class="minutes">${isAsCoeur ? '💦' : t + ' min'}</div>
                 </div>`;
             playerZone.appendChild(div);
         }
@@ -633,7 +634,7 @@
             }
             totalMinutes += 10;
             
-            document.getElementById('bonus-status').innerHTML = '🔥 <b>AS DE CŒUR !</b> — Temps doublé (< 20min) + 10 min. Masturbe-toi pendant le temps indiqué, orgasme autorisé ensuite !';
+            document.getElementById('bonus-status').innerHTML = '🔥 <b>AS DE CŒUR !</b> — Masturbe-toi pendant le temps indiqué, orgasme autorisé ensuite !';
             document.getElementById('instruction').textContent = 'PARTIE TERMINÉE';
             document.getElementById('game-ticket').classList.add('locked');
             updateUI();
